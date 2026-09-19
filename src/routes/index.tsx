@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import * as Dialog from "@radix-ui/react-dialog";
+import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
   Banknote,
@@ -12,6 +14,7 @@ import {
   Navigation,
   RefreshCcw,
   Search,
+  Sparkles,
   SlidersHorizontal,
   Trash2,
   Volume2,
@@ -22,6 +25,7 @@ import { useState, type ComponentType, type Dispatch, type SetStateAction } from
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { recommendSettings, type SettingsRecommendation } from "@/lib/settings-ai.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,7 +42,7 @@ export const Route = createFileRoute("/")({
 });
 
 type SelectionSubpage = "currency" | "language" | "appearance" | "region" | "navigation";
-type Subpage = SelectionSubpage | "preference" | "sound";
+type Subpage = SelectionSubpage | "preference" | "sound" | "ai";
 type IconType = ComponentType<{ className?: string; strokeWidth?: number }>;
 
 const selectOptions: Record<SelectionSubpage, { title: string; choices: string[] }> = {
@@ -80,12 +84,13 @@ function SettingRow({
     <Button
       variant="ghost"
       onClick={onClick}
+      aria-label={value ? `${label}, current value ${value}` : `Open ${label} settings`}
       className="grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)_auto_18px] rounded-none border-b border-border px-1 text-left hover:bg-accent"
     >
-      <Icon className="size-[21px] text-foreground" strokeWidth={1.8} />
+      <Icon aria-hidden="true" className="size-[21px] text-foreground" strokeWidth={1.8} />
       <span className="min-w-0 truncate text-[15px] font-normal">{label}</span>
       <span className="max-w-28 truncate text-[14px] font-normal text-muted-foreground">{value}</span>
-      <ChevronRight className="size-[18px] text-foreground" strokeWidth={1.8} />
+      <ChevronRight aria-hidden="true" className="size-[18px] text-foreground" strokeWidth={1.8} />
     </Button>
   );
 }
@@ -97,17 +102,17 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: () =
       size="icon"
       role="switch"
       aria-checked={checked}
-      aria-label={`Toggle ${label}`}
+      aria-labelledby={`setting-${label.toLowerCase().replaceAll(" ", "-")}`}
       onClick={onChange}
       className={cn(
-        "h-7 w-12 rounded-full p-[3px] hover:bg-switch",
+        "relative h-11 w-14 rounded-full p-[3px] after:absolute after:inset-0 hover:bg-switch",
         checked ? "bg-primary" : "bg-switch",
       )}
     >
       <span
         className={cn(
           "block size-[22px] rounded-full bg-switch-knob transition-transform duration-200",
-          checked ? "translate-x-[10px]" : "-translate-x-[10px]",
+          checked ? "translate-x-[13px]" : "-translate-x-[13px]",
         )}
       />
     </Button>
@@ -130,12 +135,12 @@ function ToggleSection({
   return (
     <section>
       <div className="mb-4 flex items-center gap-3">
-        <Icon className="size-[21px] text-foreground" strokeWidth={1.8} />
+        <Icon aria-hidden="true" className="size-[21px] text-foreground" strokeWidth={1.8} />
         <h2 className="text-[15px] font-semibold">{title}</h2>
       </div>
       {items.map((item) => (
         <div key={item} className="grid min-h-[62px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-border">
-          <span className="min-w-0 text-[15px] text-foreground">{item}</span>
+          <span id={`setting-${item.toLowerCase().replaceAll(" ", "-")}`} className="min-w-0 text-[15px] text-foreground">{item}</span>
           <Toggle checked={values[item] ?? false} onChange={() => onToggle(item)} label={item} />
         </div>
       ))}
@@ -158,33 +163,35 @@ function SelectionPage({
   return (
     <div className="animate-page-in pt-2">
       <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
-        <ArrowLeft className="size-6" strokeWidth={1.7} />
+        <ArrowLeft aria-hidden="true" className="size-6" strokeWidth={1.7} />
       </Button>
       <h1 className="mb-8 text-[27px] font-semibold leading-tight">{config.title}</h1>
       {page === "currency" && (
         <>
           <label className="mb-7 grid h-[52px] grid-cols-[24px_minmax(0,1fr)] items-center gap-3 rounded-md bg-secondary px-4 text-muted-foreground">
-            <Search className="size-5" strokeWidth={1.8} />
-            <input aria-label="Currency" placeholder="Currency" className="min-w-0 bg-transparent text-[16px] outline-none placeholder:text-muted-foreground" />
+            <Search aria-hidden="true" className="size-5" strokeWidth={1.8} />
+            <input aria-label="Search currency" placeholder="Currency" className="min-w-0 bg-transparent text-[16px] outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring" />
           </label>
           <div className="mb-4 grid grid-cols-[minmax(0,1fr)_auto] items-center text-[14px] text-muted-foreground">
             <span>History</span>
-            <Trash2 className="size-5 text-foreground" strokeWidth={1.8} />
+            <Trash2 aria-hidden="true" className="size-5 text-foreground" strokeWidth={1.8} />
           </div>
         </>
       )}
       {page === "language" && (
         <div className="mb-7 flex gap-4 rounded-md bg-secondary px-4 py-4 text-[14px] leading-relaxed text-secondary-foreground">
-          <Languages className="mt-0.5 size-5 shrink-0 text-primary" />
+          <Languages aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" />
           <p>Your selected language is used throughout the app and on all devices where you're signed in.</p>
         </div>
       )}
-      <div>
+      <div role="radiogroup" aria-label={config.title}>
         {config.choices.map((choice) => (
           <Button
             key={choice}
             variant="ghost"
             onClick={() => onSelect(choice)}
+            role="radio"
+            aria-checked={selected === choice}
             className="grid h-[64px] w-full grid-cols-[minmax(0,1fr)_28px] rounded-none px-0 text-left hover:bg-accent"
           >
             <span className="text-[16px] font-normal">{choice}</span>
@@ -194,7 +201,7 @@ function SelectionPage({
                 selected === choice ? "border-primary bg-primary" : "border-input bg-canvas",
               )}
             >
-              {selected === choice && <Check className="size-3.5 text-primary-foreground" strokeWidth={3} />}
+              {selected === choice && <Check aria-hidden="true" className="size-3.5 text-primary-foreground" strokeWidth={3} />}
             </span>
           </Button>
         ))}
@@ -218,7 +225,7 @@ function TogglePage({
   return (
     <div className="animate-page-in pt-2">
       <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
-        <ArrowLeft className="size-6" strokeWidth={1.7} />
+        <ArrowLeft aria-hidden="true" className="size-6" strokeWidth={1.7} />
       </Button>
       <h1 className="mb-8 text-[27px] font-semibold leading-tight">{isPreference ? "Preference" : "Sound"}</h1>
       <ToggleSection
