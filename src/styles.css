@@ -189,25 +189,6 @@
   animation: page-in 180ms ease-out both;
 }
 
-@utility sr-only-focusable {
-  position: fixed;
-  left: 0.75rem;
-  top: 0.75rem;
-  z-index: 50;
-  transform: translateY(-200%);
-  &:focus {
-    transform: translateY(0);
-  }
-}
-
-[data-reduce-motion="true"] *,
-[data-reduce-motion="true"] *::before,
-[data-reduce-motion="true"] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
