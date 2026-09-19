@@ -22,7 +22,7 @@ export const Route = createFileRoute("/community")({
 function TelegramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0c-.019 0-.038 0-.056 0zm4.962 7.224c.086-.008.18.012.261.063.08.05.132.13.164.216.06.16.092.332.084.504l-.004.092-1.146 7.32c-.054.3-.192.56-.406.74-.214.18-.49.27-.79.252-.248-.015-.5-.09-.742-.206l-.066-.032-2.13-1.106-1.12.812c-.21.152-.44.252-.68.288-.12.018-.24.018-.358 0-.176-.026-.346-.09-.492-.188-.146-.098-.268-.228-.356-.38l-.032-.058-.456-.94-1.672-.868c-.27-.14-.438-.352-.488-.608-.05-.256.01-.528.168-.754.1-.142.232-.258.386-.34.154-.082.328-.13.506-.138l.098.002 7.586.608.99-3.68c.024-.09.074-.174.144-.238.07-.064.158-.106.252-.118.052-.006.104-.002.154.012zm-5.652 4.45l.884 1.824.5-1.626-1.384-.198z" />
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
     </svg>
   );
 }
@@ -35,10 +35,18 @@ type SocialItem = {
   bgClass: string;
 };
 
-const telegram: SocialItem = {
+const telegramCommunity: SocialItem = {
   name: "Telegram",
   handle: "@AryaPremiumTG",
   url: "https://t.me/AryaPremiumTG",
+  icon: <TelegramIcon className="size-5 text-white" />,
+  bgClass: "bg-[#229ED9]",
+};
+
+const telegramDeveloper: SocialItem = {
+  name: "Developer",
+  handle: "@MeJeetX",
+  url: "https://t.me/MeJeetX",
   icon: <TelegramIcon className="size-5 text-white" />,
   bgClass: "bg-[#229ED9]",
 };
@@ -108,8 +116,9 @@ function CommunityPage() {
             </h2>
           </div>
 
-          <div className="mb-5">
-            <SocialButton item={telegram} />
+          <div className="mb-5 flex flex-col gap-3">
+            <SocialButton item={telegramCommunity} />
+            <SocialButton item={telegramDeveloper} />
           </div>
 
           <div className="rounded-[16px] border border-border bg-secondary p-4">
