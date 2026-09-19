@@ -110,6 +110,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <a href="#main-content" className="sr-only-focusable rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background">
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>
