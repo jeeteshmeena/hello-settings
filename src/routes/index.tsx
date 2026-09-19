@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Banknote,
@@ -13,6 +13,7 @@ import {
   Search,
   SlidersHorizontal,
   Trash2,
+  Users,
   Volume2,
 } from "lucide-react";
 import { useState, type ComponentType, type Dispatch, type SetStateAction } from "react";
