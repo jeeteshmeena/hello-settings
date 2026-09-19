@@ -10,11 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as DeliveryAndRefundPolicyRouteImport } from './routes/delivery-and-refund-policy'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ReadMeRouteImport } from './routes/read-me'
+import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CommunityRoute = CommunityRouteImport.update({
@@ -22,31 +32,93 @@ const CommunityRoute = CommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeliveryAndRefundPolicyRoute = DeliveryAndRefundPolicyRouteImport.update({
+  id: '/delivery-and-refund-policy',
+  path: '/delivery-and-refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadMeRoute = ReadMeRouteImport.update({
+  id: '/read-me',
+  path: '/read-me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
+  id: '/terms-and-conditions',
+  path: '/terms-and-conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
+  '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/read-me': typeof ReadMeRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
+  '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/read-me': typeof ReadMeRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
+  '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/read-me': typeof ReadMeRoute
+  '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/community'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/community'
+    | '/delivery-and-refund-policy'
+    | '/privacy-policy'
+    | '/read-me'
+    | '/terms-and-conditions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/community'
-  id: '__root__' | '/' | '/community'
+  to:
+    | '/'
+    | '/about'
+    | '/community'
+    | '/delivery-and-refund-policy'
+    | '/privacy-policy'
+    | '/read-me'
+    | '/terms-and-conditions'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/community'
+    | '/delivery-and-refund-policy'
+    | '/privacy-policy'
+    | '/read-me'
+    | '/terms-and-conditions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   CommunityRoute: typeof CommunityRoute
+  DeliveryAndRefundPolicyRoute: typeof DeliveryAndRefundPolicyRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ReadMeRoute: typeof ReadMeRoute
+  TermsAndConditionsRoute: typeof TermsAndConditionsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/community': {
       id: '/community'
       path: '/community'
@@ -65,12 +144,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/delivery-and-refund-policy': {
+      id: '/delivery-and-refund-policy'
+      path: '/delivery-and-refund-policy'
+      fullPath: '/delivery-and-refund-policy'
+      preLoaderRoute: typeof DeliveryAndRefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/read-me': {
+      id: '/read-me'
+      path: '/read-me'
+      fullPath: '/read-me'
+      preLoaderRoute: typeof ReadMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-and-conditions': {
+      id: '/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof TermsAndConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   CommunityRoute: CommunityRoute,
+  DeliveryAndRefundPolicyRoute: DeliveryAndRefundPolicyRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ReadMeRoute: ReadMeRoute,
+  TermsAndConditionsRoute: TermsAndConditionsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

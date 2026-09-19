@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { type ReactNode } from "react";
 
-import communityArt from "@/assets/arya-community.png.asset.json";
+import communityArt from "@/assets/arya-community-cast.png.asset.json";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/community")({
@@ -116,7 +116,7 @@ function CommunityPage() {
             </h2>
           </div>
 
-          <div className="mb-5 flex flex-col gap-3">
+          <div className="mb-5 grid grid-cols-2 gap-3">
             <SocialButton item={telegramCommunity} />
             <SocialButton item={telegramDeveloper} />
           </div>

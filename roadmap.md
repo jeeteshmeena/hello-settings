@@ -7,3 +7,5 @@
 - [x] Verify the complete mobile interaction flow.
 - [x] Remove warm accents, tighten subpages, and refine forward/back transitions.
 - [x] Build Arya Premium Community page with art, Telegram link, and website links.
+- [x] Replace Community art and place both Telegram links in one row.
+- [x] Build About Us, recommendation rating, and four linked policy pages.
