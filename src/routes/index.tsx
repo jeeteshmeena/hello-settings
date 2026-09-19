@@ -126,7 +126,7 @@ function ToggleSection({
 }) {
   return (
     <section>
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-2 flex items-center gap-3">
         <Icon className="size-[21px] text-foreground" strokeWidth={1.8} />
         <h2 className="text-[15px] font-semibold">{title}</h2>
       </div>
@@ -153,14 +153,14 @@ function SelectionPage({
 }) {
   const config = selectOptions[page];
   return (
-    <div className="animate-page-in pt-2">
-      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
+    <div className="pt-0">
+      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-2">
         <ArrowLeft className="size-6" strokeWidth={1.7} />
       </Button>
-      <h1 className="mb-7 text-[24px] font-semibold leading-tight">{config.title}</h1>
+      <h1 className="mb-4 text-[24px] font-semibold leading-tight">{config.title}</h1>
       {page === "currency" && (
         <>
-          <label className="mb-7 grid h-[52px] grid-cols-[24px_minmax(0,1fr)] items-center gap-3 rounded-md bg-secondary px-4 text-muted-foreground">
+          <label className="mb-4 grid h-[50px] grid-cols-[24px_minmax(0,1fr)] items-center gap-3 rounded-md bg-secondary px-4 text-muted-foreground">
             <Search className="size-5" strokeWidth={1.8} />
             <input aria-label="Currency" placeholder="Currency" className="min-w-0 bg-transparent text-[16px] outline-none placeholder:text-muted-foreground" />
           </label>
@@ -171,7 +171,7 @@ function SelectionPage({
         </>
       )}
       {page === "language" && (
-        <div className="mb-7 flex gap-4 rounded-md bg-secondary px-4 py-4 text-[14px] leading-relaxed text-secondary-foreground">
+        <div className="mb-4 flex gap-4 rounded-md bg-secondary px-4 py-3.5 text-[14px] leading-relaxed text-secondary-foreground">
           <Languages className="mt-0.5 size-5 shrink-0 text-primary" />
           <p>Your selected language is used throughout the app and on all devices where you're signed in.</p>
         </div>
@@ -213,11 +213,11 @@ function TogglePage({
 }) {
   const isPreference = page === "preference";
   return (
-    <div className="animate-page-in pt-2">
-      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
+    <div className="pt-0">
+      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-2">
         <ArrowLeft className="size-6" strokeWidth={1.7} />
       </Button>
-      <h1 className="mb-7 text-[24px] font-semibold leading-tight">{isPreference ? "Preference" : "Sound"}</h1>
+      <h1 className="mb-4 text-[24px] font-semibold leading-tight">{isPreference ? "Preference" : "Sound"}</h1>
       <ToggleSection
         icon={isPreference ? SlidersHorizontal : Volume2}
         title={isPreference ? "Preferences" : "Sound settings"}
@@ -231,6 +231,7 @@ function TogglePage({
 
 function SettingsPage() {
   const [page, setPage] = useState<Subpage | null>(null);
+  const [navigationDirection, setNavigationDirection] = useState<"forward" | "back">("forward");
   const [selections, setSelections] = useState(initialSelections);
   const [preferences, setPreferences] = useState<Record<string, boolean>>({
     "Show Price": true,
@@ -251,6 +252,16 @@ function SettingsPage() {
     item: string,
   ) => setter((current) => ({ ...current, [item]: !current[item] }));
 
+  const openPage = (nextPage: Subpage) => {
+    setNavigationDirection("forward");
+    setPage(nextPage);
+  };
+
+  const closePage = () => {
+    setNavigationDirection("back");
+    setPage(null);
+  };
+
   const reset = () => {
     setSelections(initialSelections);
     setPreferences({ "Show Price": true, "Reduce Motion": false, "Ongoing Story Updates": true });
@@ -268,25 +279,26 @@ function SettingsPage() {
   return (
     <main data-appearance={selections.appearance.toLowerCase()} className="min-h-dvh bg-canvas text-foreground">
       <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))]">
+        <div key={page ?? "settings"} className={navigationDirection === "back" ? "animate-page-back" : "animate-page-forward"}>
         {page === "preference" || page === "sound" ? (
           <TogglePage
             page={page}
             values={page === "preference" ? preferences : sounds}
             onToggle={(item) => toggle(page === "preference" ? setPreferences : setSounds, item)}
-            onBack={() => setPage(null)}
+            onBack={closePage}
           />
         ) : page ? (
           <SelectionPage
             page={page}
             selected={selections[page]}
-            onBack={() => setPage(null)}
+            onBack={closePage}
             onSelect={(choice) => {
               setSelections((current) => ({ ...current, [page]: choice }));
-              window.setTimeout(() => setPage(null), 120);
+              window.setTimeout(closePage, 120);
             }}
           />
         ) : (
-          <div className="flex min-h-[calc(100dvh-26px)] animate-page-in flex-col">
+          <div className="flex min-h-[calc(100dvh-26px)] flex-col">
             <header>
               <Button variant="ghost" size="icon" aria-label="Back" onClick={() => window.history.back()} className="-ml-3 mb-3">
                 <ArrowLeft className="size-6" strokeWidth={1.7} />
@@ -295,13 +307,13 @@ function SettingsPage() {
             </header>
 
             <section className="border-t border-border">
-              <SettingRow icon={CircleDollarSign} label="Currency" value={selections.currency} onClick={() => setPage("currency")} />
-              <SettingRow icon={Globe2} label="Language" value={selections.language} onClick={() => setPage("language")} />
-              <SettingRow icon={MoonStar} label="Appearance" value={selections.appearance} onClick={() => setPage("appearance")} />
-              <SettingRow icon={Banknote} label="Region" value={selections.region} onClick={() => setPage("region")} />
-              <SettingRow icon={Navigation} label="Midnight Navigation" value={selections.navigation} onClick={() => setPage("navigation")} />
-              <SettingRow icon={Bell} label="Preference" value="" onClick={() => setPage("preference")} />
-              <SettingRow icon={Volume2} label="Sound" value="" onClick={() => setPage("sound")} />
+              <SettingRow icon={CircleDollarSign} label="Currency" value={selections.currency} onClick={() => openPage("currency")} />
+              <SettingRow icon={Globe2} label="Language" value={selections.language} onClick={() => openPage("language")} />
+              <SettingRow icon={MoonStar} label="Appearance" value={selections.appearance} onClick={() => openPage("appearance")} />
+              <SettingRow icon={Banknote} label="Region" value={selections.region} onClick={() => openPage("region")} />
+              <SettingRow icon={Navigation} label="Midnight Navigation" value={selections.navigation} onClick={() => openPage("navigation")} />
+              <SettingRow icon={Bell} label="Preference" value="" onClick={() => openPage("preference")} />
+              <SettingRow icon={Volume2} label="Sound" value="" onClick={() => openPage("sound")} />
             </section>
 
             <Button
@@ -313,6 +325,7 @@ function SettingsPage() {
             </Button>
           </div>
         )}
+        </div>
 
         {resetDone && (
           <div role="status" className="fixed bottom-20 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-md border border-border bg-popover px-4 py-3 text-xs shadow-dialog">
