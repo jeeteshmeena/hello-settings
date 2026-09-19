@@ -316,6 +316,7 @@ function SettingsPage() {
               <SettingRow icon={Navigation} label="Midnight Navigation" value={selections.navigation} onClick={() => openPage("navigation")} />
               <SettingRow icon={Bell} label="Preference" value="" onClick={() => openPage("preference")} />
               <SettingRow icon={Volume2} label="Sound" value="" onClick={() => openPage("sound")} />
+              <SettingRow icon={Users} label="Community" value="" onClick={() => navigate({ to: "/community" })} />
             </section>
 
             <Button
