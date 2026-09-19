@@ -5,3 +5,6 @@
 - [x] Move Preference and Sound into dedicated inner pages.
 - [x] Verify the refined screen and all mobile interactions.
 - [x] Verify the complete mobile interaction flow.
+- [ ] Improve focus states, labels, tap targets, dialog behavior, and contrast.
+- [ ] Add AI preference description and validated settings recommendations.
+- [ ] Verify accessibility and the AI recommendation flow on mobile.
