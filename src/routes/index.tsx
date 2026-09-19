@@ -231,6 +231,7 @@ function TogglePage({
 }
 
 function SettingsPage() {
+  const navigate = useNavigate();
   const [page, setPage] = useState<Subpage | null>(null);
   const [navigationDirection, setNavigationDirection] = useState<"forward" | "back">("forward");
   const [selections, setSelections] = useState(initialSelections);

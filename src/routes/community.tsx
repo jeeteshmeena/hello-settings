@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink } from "lucide-react";
+import { type ReactNode } from "react";
 
 import communityArt from "@/assets/arya-community.png.asset.json";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,7 @@ function InstagramIcon({ className }: { className?: string }) {
 type SocialItem = {
   name: string;
   handle: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   url?: string;
   bgClass: string;
 };
@@ -90,7 +91,7 @@ const socials: SocialItem[] = [
     name: "Twitter",
     handle: "@AryaPremium",
     icon: <TwitterIcon className="size-5 text-white" />,
-    bgClass: "bg-foreground",
+    bgClass: "bg-[#000000]",
   },
   {
     name: "Facebook",
