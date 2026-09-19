@@ -2,18 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Banknote,
-  BellRing,
   Check,
   ChevronRight,
   CircleDollarSign,
   Globe2,
   Languages,
   MoonStar,
-  Music2,
   Navigation,
   RefreshCcw,
   SlidersHorizontal,
-  Sparkles,
   Volume2,
   WandSparkles,
   X,
@@ -135,7 +132,7 @@ function ToggleSection({
       {items.map((item) => (
         <div key={item} className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 pl-7 pr-1">
           <span className="min-w-0 text-[12px] text-muted-foreground">{item}</span>
-          <Toggle checked={values[item]} onChange={() => onToggle(item)} label={item} />
+          <Toggle checked={values[item] ?? false} onChange={() => onToggle(item)} label={item} />
         </div>
       ))}
     </section>
