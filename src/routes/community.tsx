@@ -175,13 +175,13 @@ function CommunityPage() {
         </header>
 
         <section className="animate-page-forward">
-          <div className="mb-5 overflow-hidden rounded-[24px] bg-card">
+          <div className="mb-5 overflow-hidden rounded-[24px] bg-secondary">
             <img
               src={communityArt.url}
               alt="Arya Premium Community"
               className="block h-auto w-full object-cover"
             />
-            <h2 className="px-6 py-5 text-center text-[22px] font-semibold leading-tight text-card-foreground">
+            <h2 className="px-6 py-5 text-center text-[22px] font-semibold leading-tight text-secondary-foreground">
               Welcome to the Arya Premium community!
             </h2>
           </div>
