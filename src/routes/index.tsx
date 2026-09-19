@@ -10,7 +10,6 @@ import {
   Languages,
   MoonStar,
   Navigation,
-  RefreshCcw,
   Search,
   SlidersHorizontal,
   Trash2,
@@ -78,11 +77,11 @@ function SettingRow({
     <Button
       variant="ghost"
       onClick={onClick}
-      className="grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)_auto_18px] rounded-none border-b border-border px-1 text-left hover:bg-accent"
+      className="grid h-[54px] w-full grid-cols-[28px_minmax(0,1fr)_auto_18px] rounded-none border-b border-border px-1 text-left hover:bg-accent"
     >
       <Icon className="size-[21px] text-foreground" strokeWidth={1.8} />
-      <span className="min-w-0 truncate text-[15px] font-normal">{label}</span>
-      <span className="max-w-28 truncate text-[14px] font-normal text-muted-foreground">{value}</span>
+      <span className="min-w-0 truncate text-[14px] font-normal">{label}</span>
+      <span className="max-w-28 truncate text-[13px] font-normal text-muted-foreground">{value}</span>
       <ChevronRight className="size-[18px] text-foreground" strokeWidth={1.8} />
     </Button>
   );
@@ -158,7 +157,7 @@ function SelectionPage({
       <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
         <ArrowLeft className="size-6" strokeWidth={1.7} />
       </Button>
-      <h1 className="mb-8 text-[27px] font-semibold leading-tight">{config.title}</h1>
+      <h1 className="mb-7 text-[24px] font-semibold leading-tight">{config.title}</h1>
       {page === "currency" && (
         <>
           <label className="mb-7 grid h-[52px] grid-cols-[24px_minmax(0,1fr)] items-center gap-3 rounded-md bg-secondary px-4 text-muted-foreground">
@@ -218,7 +217,7 @@ function TogglePage({
       <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-7">
         <ArrowLeft className="size-6" strokeWidth={1.7} />
       </Button>
-      <h1 className="mb-8 text-[27px] font-semibold leading-tight">{isPreference ? "Preference" : "Sound"}</h1>
+      <h1 className="mb-7 text-[24px] font-semibold leading-tight">{isPreference ? "Preference" : "Sound"}</h1>
       <ToggleSection
         icon={isPreference ? SlidersHorizontal : Volume2}
         title={isPreference ? "Preferences" : "Sound settings"}
@@ -287,12 +286,12 @@ function SettingsPage() {
             }}
           />
         ) : (
-          <div className="flex min-h-[calc(100dvh-26px)] animate-page-in flex-col pt-2">
+          <div className="flex min-h-[calc(100dvh-26px)] animate-page-in flex-col">
             <header>
-              <Button variant="ghost" size="icon" aria-label="Back" onClick={() => window.history.back()} className="-ml-3 mb-7">
+              <Button variant="ghost" size="icon" aria-label="Back" onClick={() => window.history.back()} className="-ml-3 mb-3">
                 <ArrowLeft className="size-6" strokeWidth={1.7} />
               </Button>
-              <h1 className="mb-6 text-[27px] font-semibold leading-tight">Settings</h1>
+              <h1 className="mb-4 text-[24px] font-semibold leading-tight">Settings</h1>
             </header>
 
             <section className="border-t border-border">
@@ -303,16 +302,15 @@ function SettingsPage() {
               <SettingRow icon={Navigation} label="Midnight Navigation" value={selections.navigation} onClick={() => setPage("navigation")} />
               <SettingRow icon={Bell} label="Preference" value="" onClick={() => setPage("preference")} />
               <SettingRow icon={Volume2} label="Sound" value="" onClick={() => setPage("sound")} />
-              <Button
-                variant="ghost"
-                onClick={() => setShowReset(true)}
-                className="group grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)_18px] rounded-none border-b border-border px-1 text-left text-destructive transition-colors duration-150 hover:bg-accent hover:text-destructive active:bg-accent"
-              >
-                <RefreshCcw className="size-[21px]" strokeWidth={1.8} />
-                <span className="min-w-0 truncate text-[15px] font-normal">Reset onboarding</span>
-                <ChevronRight className="size-[18px] text-muted-foreground transition-transform duration-150 group-active:translate-x-0.5" strokeWidth={1.8} />
-              </Button>
             </section>
+
+            <Button
+              variant="secondary"
+              onClick={() => setShowReset(true)}
+              className="mt-auto h-[52px] w-full rounded-[10px] border-0 bg-secondary text-[15px] font-medium text-foreground shadow-none hover:bg-accent active:bg-accent"
+            >
+              Reset onboarding
+            </Button>
           </div>
         )}
 
