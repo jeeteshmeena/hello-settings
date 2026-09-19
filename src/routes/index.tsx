@@ -305,14 +305,15 @@ function SettingsPage() {
               <SettingRow icon={Navigation} label="Midnight Navigation" value={selections.navigation} onClick={() => setPage("navigation")} />
               <SettingRow icon={Bell} label="Preference" value="" onClick={() => setPage("preference")} />
               <SettingRow icon={Volume2} label="Sound" value="" onClick={() => setPage("sound")} />
-            </section>
-
-            <div className="mt-auto pt-10">
-              <Button variant="secondary" size="wide" onClick={() => setShowReset(true)}>
-                <RefreshCcw className="size-4" />
-                Reset onboarding
+              <Button
+                variant="ghost"
+                onClick={() => setShowReset(true)}
+                className="grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)] rounded-none border-b border-border px-1 text-left text-destructive hover:bg-accent hover:text-destructive"
+              >
+                <RefreshCcw className="size-[21px]" strokeWidth={1.8} />
+                <span className="min-w-0 truncate text-[15px] font-normal">Reset onboarding</span>
               </Button>
-            </div>
+            </section>
           </div>
         )}
 
