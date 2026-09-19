@@ -239,6 +239,105 @@ function TogglePage({
   );
 }
 
+function AiSettingsPage({
+  onBack,
+  onApply,
+}: {
+  onBack: () => void;
+  onApply: (recommendation: SettingsRecommendation) => void;
+}) {
+  const recommend = useServerFn(recommendSettings);
+  const [description, setDescription] = useState("");
+  const [recommendation, setRecommendation] = useState<SettingsRecommendation | null>(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const generate = async () => {
+    if (description.trim().length < 3) {
+      setError("Describe your preferences in a little more detail.");
+      return;
+    }
+    setError("");
+    setRecommendation(null);
+    setIsLoading(true);
+    try {
+      const result = await recommend({ data: { description } });
+      setRecommendation(result);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "AI recommendations are unavailable right now.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const recommendationRows = recommendation
+    ? [
+        ["Currency", recommendation.currency],
+        ["Language", recommendation.language],
+        ["Appearance", recommendation.appearance],
+        ["Show Price", recommendation.preferences.showPrice ? "On" : "Off"],
+        ["Reduce Motion", recommendation.preferences.reduceMotion ? "On" : "Off"],
+        ["Story Updates", recommendation.preferences.ongoingStoryUpdates ? "On" : "Off"],
+        ["Payment sound", recommendation.sounds.paymentSuccess ? "On" : "Off"],
+        ["Episode sound", recommendation.sounds.episodeDelivery ? "On" : "Off"],
+        ["Sound Effects", recommendation.sounds.soundEffects ? "On" : "Off"],
+        ["Demo sound", recommendation.sounds.demoRequest ? "On" : "Off"],
+      ]
+    : [];
+
+  return (
+    <div className="animate-page-in pt-2">
+      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back to settings" className="-ml-3 mb-7">
+        <ArrowLeft aria-hidden="true" className="size-6" strokeWidth={1.7} />
+      </Button>
+      <h1 className="text-[27px] font-semibold leading-tight">Set up with AI</h1>
+      <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+        Describe how you use the app, and AI will suggest settings you can review first.
+      </p>
+      <label htmlFor="ai-preferences" className="mt-7 block text-[15px] font-semibold">Your preferences</label>
+      <textarea
+        id="ai-preferences"
+        value={description}
+        onChange={(event) => setDescription(event.target.value)}
+        placeholder="For example: I live in India, prefer Hindi, a warm look, fewer animations, and only important sounds."
+        maxLength={1000}
+        rows={5}
+        aria-describedby="ai-preferences-help"
+        className="mt-3 min-h-32 w-full resize-y rounded-md border border-input bg-secondary px-4 py-3 text-base leading-relaxed text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      />
+      <div id="ai-preferences-help" className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-xs text-muted-foreground">
+        <span>Your text is used only to create this recommendation.</span>
+        <span aria-label={`${description.length} of 1000 characters`}>{description.length}/1000</span>
+      </div>
+      <Button variant="secondary" size="wide" disabled={isLoading} onClick={generate} className="mt-5">
+        <Sparkles aria-hidden="true" className="size-4" />
+        {isLoading ? "Creating recommendations…" : "Create recommendations"}
+      </Button>
+
+      <div aria-live="polite" aria-atomic="true">
+        {error && <p role="alert" className="mt-4 rounded-md border border-destructive bg-popover px-4 py-3 text-sm text-destructive-foreground">{error}</p>}
+        {recommendation && (
+          <section aria-labelledby="recommendation-title" className="mt-7 border-t border-border pt-6">
+            <h2 id="recommendation-title" className="text-lg font-semibold">Recommended settings</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{recommendation.summary}</p>
+            <dl className="mt-4 divide-y divide-border border-y border-border">
+              {recommendationRows.map(([label, value]) => (
+                <div key={label} className="grid min-h-11 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-2 text-sm">
+                  <dt className="min-w-0">{label}</dt>
+                  <dd className="text-muted-foreground">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <Button variant="secondary" size="wide" onClick={() => onApply(recommendation)} className="mt-5">
+              <Check aria-hidden="true" className="size-4" /> Apply recommendations
+            </Button>
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function SettingsPage() {
   const [page, setPage] = useState<Subpage | null>(null);
   const [selections, setSelections] = useState(initialSelections);
@@ -255,6 +354,7 @@ function SettingsPage() {
   });
   const [showReset, setShowReset] = useState(false);
   const [resetDone, setResetDone] = useState(false);
+  const [aiApplied, setAiApplied] = useState(false);
 
   const toggle = (
     setter: Dispatch<SetStateAction<Record<string, boolean>>>,
@@ -276,9 +376,35 @@ function SettingsPage() {
   };
 
   return (
-    <main data-appearance={selections.appearance.toLowerCase()} className="min-h-dvh bg-canvas text-foreground">
+    <main id="main-content" tabIndex={-1} data-appearance={selections.appearance.toLowerCase()} data-reduce-motion={preferences["Reduce Motion"]} className="min-h-dvh bg-canvas text-foreground outline-none">
       <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-[max(14px,env(safe-area-inset-top))]">
-        {page === "preference" || page === "sound" ? (
+        {page === "ai" ? (
+          <AiSettingsPage
+            onBack={() => setPage(null)}
+            onApply={(recommendation) => {
+              setSelections((current) => ({
+                ...current,
+                currency: recommendation.currency,
+                language: recommendation.language,
+                appearance: recommendation.appearance,
+              }));
+              setPreferences({
+                "Show Price": recommendation.preferences.showPrice,
+                "Reduce Motion": recommendation.preferences.reduceMotion,
+                "Ongoing Story Updates": recommendation.preferences.ongoingStoryUpdates,
+              });
+              setSounds({
+                "Payment success sound": recommendation.sounds.paymentSuccess,
+                "Episode delivery sound": recommendation.sounds.episodeDelivery,
+                "Sound Effects": recommendation.sounds.soundEffects,
+                "Demo request sound": recommendation.sounds.demoRequest,
+              });
+              setPage(null);
+              setAiApplied(true);
+              window.setTimeout(() => setAiApplied(false), 3000);
+            }}
+          />
+        ) : page === "preference" || page === "sound" ? (
           <TogglePage
             page={page}
             values={page === "preference" ? preferences : sounds}
@@ -299,12 +425,13 @@ function SettingsPage() {
           <div className="flex min-h-[calc(100dvh-26px)] animate-page-in flex-col pt-2">
             <header>
               <Button variant="ghost" size="icon" aria-label="Back" onClick={() => window.history.back()} className="-ml-3 mb-7">
-                <ArrowLeft className="size-6" strokeWidth={1.7} />
+                <ArrowLeft aria-hidden="true" className="size-6" strokeWidth={1.7} />
               </Button>
               <h1 className="mb-6 text-[27px] font-semibold leading-tight">Settings</h1>
             </header>
 
             <section className="border-t border-border">
+              <SettingRow icon={Sparkles} label="Set up with AI" value="" onClick={() => setPage("ai")} />
               <SettingRow icon={CircleDollarSign} label="Currency" value={selections.currency} onClick={() => setPage("currency")} />
               <SettingRow icon={Globe2} label="Language" value={selections.language} onClick={() => setPage("language")} />
               <SettingRow icon={MoonStar} label="Appearance" value={selections.appearance} onClick={() => setPage("appearance")} />
@@ -316,7 +443,7 @@ function SettingsPage() {
 
             <div className="mt-auto pt-10">
               <Button variant="secondary" size="wide" onClick={() => setShowReset(true)}>
-                <RefreshCcw className="size-4" />
+                <RefreshCcw aria-hidden="true" className="size-4" />
                 Reset onboarding
               </Button>
             </div>
@@ -325,30 +452,35 @@ function SettingsPage() {
 
         {resetDone && (
           <div role="status" className="fixed bottom-20 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-md border border-border bg-popover px-4 py-3 text-xs shadow-dialog">
-            <Check className="size-4 text-primary" /> Onboarding reset
+            <Check aria-hidden="true" className="size-4 text-primary" /> Onboarding reset
           </div>
         )}
 
-        {showReset && (
-          <div className="fixed inset-0 z-20 grid place-items-end bg-overlay p-4 sm:place-items-center" role="presentation">
-            <section role="dialog" aria-modal="true" aria-labelledby="reset-title" className="w-full max-w-[448px] rounded-md border border-border bg-popover p-5 shadow-dialog">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
-                <div className="min-w-0">
-                  <WandSparkles className="mb-4 size-5 text-primary" />
-                  <h2 id="reset-title" className="text-base font-semibold">Reset onboarding?</h2>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Your onboarding choices will return to their defaults.</p>
-                </div>
-                <Button variant="ghost" size="icon" onClick={() => setShowReset(false)} aria-label="Close">
-                  <X className="size-4" />
-                </Button>
-              </div>
-              <div className="mt-5 grid grid-cols-2 gap-2">
-                <Button variant="ghost" onClick={() => setShowReset(false)}>Cancel</Button>
-                <Button variant="destructive" onClick={reset}>Reset</Button>
-              </div>
-            </section>
+        {aiApplied && (
+          <div role="status" className="fixed bottom-20 left-1/2 flex w-max max-w-[calc(100%-2rem)] -translate-x-1/2 items-center gap-2 rounded-md border border-border bg-popover px-4 py-3 text-xs shadow-dialog">
+            <Check aria-hidden="true" className="size-4 text-primary" /> AI recommendations applied
           </div>
         )}
+
+        <Dialog.Root open={showReset} onOpenChange={setShowReset}>
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 z-20 bg-overlay" />
+            <Dialog.Content aria-describedby="reset-description" className="fixed inset-x-4 bottom-4 z-30 mx-auto w-auto max-w-[448px] rounded-md border border-border bg-popover p-5 shadow-dialog outline-none focus-visible:ring-2 focus-visible:ring-ring sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
+                <div className="min-w-0">
+                  <WandSparkles aria-hidden="true" className="mb-4 size-5 text-primary" />
+                  <Dialog.Title className="text-base font-semibold">Reset onboarding?</Dialog.Title>
+                  <Dialog.Description id="reset-description" className="mt-2 text-xs leading-relaxed text-muted-foreground">Your onboarding choices will return to their defaults.</Dialog.Description>
+                </div>
+                <Dialog.Close asChild><Button variant="ghost" size="icon" aria-label="Close reset dialog"><X aria-hidden="true" className="size-4" /></Button></Dialog.Close>
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <Dialog.Close asChild><Button variant="ghost">Cancel</Button></Dialog.Close>
+                <Button variant="destructive" onClick={reset}>Reset</Button>
+              </div>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
       </div>
     </main>
   );
