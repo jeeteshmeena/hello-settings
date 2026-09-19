@@ -15,8 +15,6 @@ import {
   SlidersHorizontal,
   Trash2,
   Volume2,
-  WandSparkles,
-  X,
 } from "lucide-react";
 import { useState, type ComponentType, type Dispatch, type SetStateAction } from "react";
 
@@ -308,10 +306,11 @@ function SettingsPage() {
               <Button
                 variant="ghost"
                 onClick={() => setShowReset(true)}
-                className="grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)] rounded-none border-b border-border px-1 text-left text-destructive hover:bg-accent hover:text-destructive"
+                className="group grid h-[60px] w-full grid-cols-[30px_minmax(0,1fr)_18px] rounded-none border-b border-border px-1 text-left text-destructive transition-colors duration-150 hover:bg-accent hover:text-destructive active:bg-accent"
               >
                 <RefreshCcw className="size-[21px]" strokeWidth={1.8} />
                 <span className="min-w-0 truncate text-[15px] font-normal">Reset onboarding</span>
+                <ChevronRight className="size-[18px] text-muted-foreground transition-transform duration-150 group-active:translate-x-0.5" strokeWidth={1.8} />
               </Button>
             </section>
           </div>
@@ -324,22 +323,41 @@ function SettingsPage() {
         )}
 
         {showReset && (
-          <div className="fixed inset-0 z-20 grid place-items-end bg-overlay p-4 sm:place-items-center" role="presentation">
-            <section role="dialog" aria-modal="true" aria-labelledby="reset-title" className="w-full max-w-[448px] rounded-md border border-border bg-popover p-5 shadow-dialog">
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
-                <div className="min-w-0">
-                  <WandSparkles className="mb-4 size-5 text-primary" />
-                  <h2 id="reset-title" className="text-base font-semibold">Reset onboarding?</h2>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Your onboarding choices will return to their defaults.</p>
+          <div
+            className="fixed inset-0 z-20 flex animate-sheet-backdrop flex-col justify-end bg-overlay p-2 pb-[max(18px,env(safe-area-inset-bottom))] backdrop-blur-[4px]"
+            role="presentation"
+            onClick={() => setShowReset(false)}
+          >
+            <section
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="reset-title"
+              aria-describedby="reset-description"
+              className="mx-auto flex w-full max-w-[464px] animate-sheet-up flex-col gap-2"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="overflow-hidden rounded-[14px] border border-border bg-popover/90 shadow-dialog backdrop-blur-3xl">
+                <div className="border-b border-border px-8 py-4 text-center">
+                  <h2 id="reset-title" className="text-[15px] font-semibold leading-tight">Reset onboarding?</h2>
+                  <p id="reset-description" className="mt-1.5 text-[13px] leading-snug text-muted-foreground">
+                    This will clear your onboarding progress and return your choices to their defaults.
+                  </p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => setShowReset(false)} aria-label="Close">
-                  <X className="size-4" />
+                <Button
+                  variant="ghost"
+                  onClick={reset}
+                  className="h-[56px] w-full rounded-none text-[18px] font-normal text-destructive transition-colors duration-150 hover:bg-accent hover:text-destructive active:bg-accent"
+                >
+                  Reset onboarding
                 </Button>
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-2">
-                <Button variant="ghost" onClick={() => setShowReset(false)}>Cancel</Button>
-                <Button variant="destructive" onClick={reset}>Reset</Button>
-              </div>
+              <Button
+                variant="secondary"
+                onClick={() => setShowReset(false)}
+                className="h-[56px] w-full rounded-[14px] border border-border bg-popover/95 text-[18px] font-semibold text-primary shadow-dialog backdrop-blur-3xl hover:bg-accent active:bg-accent"
+              >
+                Cancel
+              </Button>
             </section>
           </div>
         )}
