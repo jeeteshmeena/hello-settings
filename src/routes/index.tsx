@@ -7,6 +7,7 @@ import {
   ChevronRight,
   CircleDollarSign,
   Globe2,
+  Info,
   Languages,
   MoonStar,
   Navigation,
@@ -317,6 +318,7 @@ function SettingsPage() {
               <SettingRow icon={Bell} label="Preference" value="" onClick={() => openPage("preference")} />
               <SettingRow icon={Volume2} label="Sound" value="" onClick={() => openPage("sound")} />
               <SettingRow icon={Users} label="Community" value="" onClick={() => navigate({ to: "/community" })} />
+              <SettingRow icon={Info} label="About Us" value="" onClick={() => navigate({ to: "/about" })} />
             </section>
 
             <Button
