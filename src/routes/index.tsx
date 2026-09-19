@@ -10,7 +10,6 @@ import {
   Languages,
   MoonStar,
   Navigation,
-  RefreshCcw,
   Search,
   SlidersHorizontal,
   Trash2,
@@ -310,7 +309,6 @@ function SettingsPage() {
               onClick={() => setShowReset(true)}
               className="mt-auto h-[52px] w-full rounded-[10px] border-0 bg-secondary text-[15px] font-medium text-foreground shadow-none hover:bg-accent active:bg-accent"
             >
-              <RefreshCcw className="size-[17px]" strokeWidth={1.8} />
               Reset onboarding
             </Button>
           </div>
