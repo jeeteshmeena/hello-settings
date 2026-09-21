@@ -11,3 +11,4 @@
 - [x] Build About Us, recommendation rating, and four linked policy pages.
 - [x] Build Profile page (New/Premium badges, Referral Coming Soon, support + settings icons, six menu rows).
 - [x] Build Profile detail page (avatar, name, UID, Username, Joined Date) and entry from Settings.
+- [x] Refine Profile typography, compact referral, story/wishlist stats, and editable name/avatar sheets.
