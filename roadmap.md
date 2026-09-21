@@ -12,4 +12,4 @@
 - [x] Build Profile page (New/Premium badges, Referral Coming Soon, support + settings icons, six menu rows).
 - [x] Build Profile detail page (avatar, name, UID, Username, Joined Date) and entry from Settings.
 - [x] Refine Profile typography, compact referral, story/wishlist stats, and editable name/avatar sheets.
-- [ ] Compact Profile and details: TG ID, editable Name, fixed Username, smaller sizing, revised referral copy.
+- [x] Compact Profile and details: TG ID, editable Name, fixed Username, smaller sizing, revised referral copy.
