@@ -42,6 +42,7 @@ type Subpage = "detail" | "how" | "coupons" | "support" | "feedback" | "faq";
 type IconType = ComponentType<{ className?: string; strokeWidth?: number }>;
 
 const profileUid = "1602208751";
+const username = "Jeetesh Meena";
 const joinedDate = "September 2026";
 const supportUrl = "https://t.me/MeJeetX";
 
@@ -79,12 +80,12 @@ function ProfileRow({
     <Button
       variant="ghost"
       onClick={onClick}
-      className="grid h-[58px] w-full grid-cols-[28px_minmax(0,1fr)_auto_18px] rounded-none border-b border-border px-1 text-left hover:bg-accent"
+      className="grid h-[52px] w-full grid-cols-[25px_minmax(0,1fr)_auto_16px] rounded-none border-b border-border px-1 text-left hover:bg-accent"
     >
-      <Icon className="size-[21px] text-foreground" strokeWidth={1.8} />
-      <span className="min-w-0 truncate text-[14px] font-normal">{label}</span>
-      <span className="max-w-28 truncate text-[13px] font-normal text-muted-foreground">{value}</span>
-      <ChevronRight className="size-[18px] text-foreground" strokeWidth={1.8} />
+      <Icon className="size-[18px] text-foreground" strokeWidth={1.8} />
+      <span className="min-w-0 truncate text-[13px] font-normal">{label}</span>
+      <span className="max-w-28 truncate text-[12px] font-normal text-muted-foreground">{value}</span>
+      <ChevronRight className="size-4 text-muted-foreground" strokeWidth={1.8} />
     </Button>
   );
 }
@@ -100,10 +101,10 @@ function SubpageShell({
 }) {
   return (
     <div className="pt-0">
-      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-2">
-        <ArrowLeft className="size-6" strokeWidth={1.7} />
+      <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back" className="-ml-3 mb-1 size-10">
+        <ArrowLeft className="size-[21px]" strokeWidth={1.7} />
       </Button>
-      <h1 className="mb-4 text-[24px] font-semibold leading-tight">{title}</h1>
+      <h1 className="mb-3 text-[21px] font-semibold leading-tight">{title}</h1>
       {children}
     </div>
   );
@@ -111,14 +112,14 @@ function SubpageShell({
 
 function TelegramCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-secondary p-5">
-      <h2 className="text-[16px] font-semibold">{title}</h2>
-      <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">{description}</p>
+      <div className="rounded-xl border border-border bg-secondary p-4">
+      <h2 className="text-[15px] font-semibold">{title}</h2>
+      <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{description}</p>
       <a
         href={supportUrl}
         target="_blank"
         rel="noreferrer"
-        className="mt-4 grid h-[48px] w-full place-items-center rounded-[10px] bg-primary text-[15px] font-medium text-primary-foreground transition-colors hover:opacity-90"
+        className="mt-4 grid h-[44px] w-full place-items-center rounded-lg bg-primary text-[14px] font-medium text-primary-foreground transition-colors hover:opacity-90"
       >
         Chat on Telegram
       </a>
@@ -201,57 +202,52 @@ function ProfilePage() {
         <div key={page ?? "profile"} className={direction === "back" ? "animate-page-back" : "animate-page-forward"}>
           {page === "detail" ? (
             <SubpageShell title="" onBack={closePage}>
-              <div className="-mt-6 flex flex-col items-center">
-                <div className="relative">
+              <div className="-mt-4 flex flex-col items-center">
+                <Button
+                  variant="ghost"
+                  onClick={openAvatarEditor}
+                  aria-label="Edit profile photo"
+                  className="h-auto rounded-full p-0 hover:bg-transparent"
+                >
                   <img
                     src={avatarSrc}
                     alt="Profile avatar"
                     width={816}
                     height={816}
-                    className="size-24 rounded-full bg-[#b9a8d9] object-cover"
+                    className="size-20 rounded-full bg-avatar object-cover"
                   />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label="Change avatar"
-                    onClick={openAvatarEditor}
-                    className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full border border-border bg-popover text-foreground shadow-dialog"
-                  >
-                    <Pencil className="size-4" strokeWidth={1.8} />
-                  </Button>
-                </div>
-                <div className="mt-3 flex items-center gap-2">
-                  <h2 className="text-[21px] font-semibold">{profileName}</h2>
-                  <Button variant="ghost" size="icon" onClick={openNameEditor} aria-label="Edit name" className="size-8">
-                    <Pencil className="size-4 text-muted-foreground" strokeWidth={1.8} />
-                  </Button>
-                </div>
+                </Button>
+                <h2 className="mt-3 text-[19px] font-semibold">{profileName}</h2>
               </div>
 
-              <div className="mt-6 rounded-2xl bg-secondary px-5">
-                <div className="grid min-h-[58px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border">
-                  <span className="text-[14px] text-muted-foreground">UID</span>
-                  <span className="flex items-center gap-2 text-[15px]">
+              <div className="mt-5 rounded-xl bg-secondary px-4">
+                <div className="grid min-h-[52px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border">
+                  <span className="text-[13px] text-muted-foreground">TG ID</span>
+                  <span className="flex items-center gap-1.5 text-[14px]">
                     {profileUid}
-                    <Button variant="ghost" size="icon" aria-label="Copy UID" onClick={copyUid} className="size-7">
-                      {copied ? <Check className="size-4 text-primary" /> : <Copy className="size-4" strokeWidth={1.8} />}
+                    <Button variant="ghost" size="icon" aria-label="Copy TG ID" onClick={copyUid} className="size-7">
+                      {copied ? <Check className="size-3.5 text-primary" /> : <Copy className="size-3.5" strokeWidth={1.8} />}
                     </Button>
                   </span>
                 </div>
-                <div className="grid min-h-[58px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border">
-                  <span className="text-[14px] text-muted-foreground">Username</span>
+                <div className="grid min-h-[52px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border">
+                  <span className="text-[13px] text-muted-foreground">Name</span>
                   <Button
                     variant="ghost"
                     onClick={openNameEditor}
-                    className="h-9 gap-2 px-1 text-[15px] font-normal"
+                    className="h-8 gap-1.5 px-1 text-[14px] font-normal"
                   >
                     {profileName}
-                    <Pencil className="size-4" strokeWidth={1.8} />
+                    <Pencil className="size-3.5" strokeWidth={1.8} />
                   </Button>
                 </div>
-                <div className="grid min-h-[58px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-                  <span className="text-[14px] text-muted-foreground">Joined Date</span>
-                  <span className="text-[15px]">{joinedDate}</span>
+                <div className="grid min-h-[52px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border">
+                  <span className="text-[13px] text-muted-foreground">Username</span>
+                  <span className="text-[14px]">{username}</span>
+                </div>
+                <div className="grid min-h-[52px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                  <span className="text-[13px] text-muted-foreground">Joined Date</span>
+                  <span className="text-[14px]">{joinedDate}</span>
                 </div>
               </div>
             </SubpageShell>
@@ -263,13 +259,13 @@ function ProfilePage() {
                   { step: "2", title: "Go premium", text: "Unlock full episodes, early access and an ad-free experience." },
                   { step: "3", title: "Enjoy anywhere", text: "Your picks and settings sync across all your devices." },
                 ].map((item) => (
-                  <div key={item.step} className="flex gap-4 rounded-2xl border border-border bg-secondary p-4">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-[15px] font-semibold text-primary-foreground">
+                  <div key={item.step} className="flex gap-3 rounded-xl border border-border bg-secondary p-3.5">
+                    <span className="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-[13px] font-semibold text-primary-foreground">
                       {item.step}
                     </span>
                     <div>
-                      <h2 className="text-[15px] font-semibold">{item.title}</h2>
-                      <p className="mt-0.5 text-[14px] leading-relaxed text-muted-foreground">{item.text}</p>
+                      <h2 className="text-[14px] font-semibold">{item.title}</h2>
+                      <p className="mt-0.5 text-[13px] leading-relaxed text-muted-foreground">{item.text}</p>
                     </div>
                   </div>
                 ))}
@@ -277,10 +273,10 @@ function ProfilePage() {
             </SubpageShell>
           ) : page === "coupons" ? (
             <SubpageShell title="Coupon & Offers" onBack={closePage}>
-              <div className="flex flex-col items-center rounded-2xl border border-dashed border-border bg-secondary px-6 py-12 text-center">
-                <Ticket className="size-10 text-muted-foreground" strokeWidth={1.5} />
-                <h2 className="mt-3 text-[16px] font-semibold">No coupons right now</h2>
-                <p className="mt-1 text-[14px] text-muted-foreground">New offers and coupons will appear here soon.</p>
+              <div className="flex flex-col items-center rounded-xl border border-dashed border-border bg-secondary px-5 py-10 text-center">
+                <Ticket className="size-8 text-muted-foreground" strokeWidth={1.5} />
+                <h2 className="mt-3 text-[15px] font-semibold">No coupons right now</h2>
+                <p className="mt-1 text-[13px] text-muted-foreground">New offers and coupons will appear here soon.</p>
               </div>
             </SubpageShell>
           ) : page === "support" ? (
@@ -314,15 +310,15 @@ function ProfilePage() {
           ) : (
             <div className="flex min-h-[calc(100dvh-26px)] flex-col">
               <header className="flex items-center justify-between">
-                <Button variant="ghost" size="icon" aria-label="Back" onClick={() => navigate({ to: "/" })} className="-ml-3">
-                  <ArrowLeft className="size-6" strokeWidth={1.7} />
+                <Button variant="ghost" size="icon" aria-label="Back" onClick={() => navigate({ to: "/" })} className="-ml-3 size-10">
+                  <ArrowLeft className="size-[21px]" strokeWidth={1.7} />
                 </Button>
                 <div className="flex items-center gap-1">
                   <Button variant="ghost" size="icon" aria-label="Support" onClick={() => openPage("support")} className="-mr-1">
-                    <Headset className="size-6" strokeWidth={1.7} />
+                    <Headset className="size-[21px]" strokeWidth={1.7} />
                   </Button>
                   <Button variant="ghost" size="icon" aria-label="Settings" onClick={() => navigate({ to: "/" })} className="-mr-3">
-                    <Settings className="size-6" strokeWidth={1.7} />
+                    <Settings className="size-[21px]" strokeWidth={1.7} />
                   </Button>
                 </div>
               </header>
@@ -330,46 +326,46 @@ function ProfilePage() {
               <Button
                 variant="ghost"
                 onClick={() => openPage("detail")}
-                className="mt-3 grid h-auto w-full grid-cols-[56px_minmax(0,1fr)_18px] items-center gap-3 rounded-none px-0 py-2 text-left hover:bg-transparent"
+                className="mt-2 grid h-auto w-full grid-cols-[50px_minmax(0,1fr)_16px] items-center gap-3 rounded-none px-0 py-2 text-left hover:bg-transparent"
               >
                 <img
                   src={avatarSrc}
                   alt="Profile avatar"
                   width={816}
                   height={816}
-                  className="size-14 rounded-full bg-avatar object-cover"
+                  className="size-[50px] rounded-full bg-avatar object-cover"
                 />
                 <span className="min-w-0">
-                  <span className="block truncate text-[18px] font-semibold leading-snug">{profileName}</span>
-                  <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-muted-foreground">
-                    UID: {profileUid}
-                    <Copy className="size-3.5" strokeWidth={1.8} />
+                  <span className="block truncate text-[16px] font-semibold leading-snug">{profileName}</span>
+                  <span className="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                    TG ID: {profileUid}
+                    <Copy className="size-3" strokeWidth={1.8} />
                   </span>
                   <span className="mt-1.5 flex gap-2">
-                    <span className="rounded-md bg-success-muted px-2.5 py-1 text-[11px] font-medium text-success">New</span>
-                    <span className="rounded-md bg-success-muted px-2.5 py-1 text-[11px] font-medium text-success">Premium</span>
+                    <span className="rounded-md bg-success-muted px-2 py-0.5 text-[10px] font-medium text-success">New</span>
+                    <span className="rounded-md bg-success-muted px-2 py-0.5 text-[10px] font-medium text-success">Premium</span>
                   </span>
                 </span>
-                <ChevronRight className="size-[18px] self-start justify-self-end text-muted-foreground" strokeWidth={1.8} />
+                <ChevronRight className="size-4 self-start justify-self-end text-muted-foreground" strokeWidth={1.8} />
               </Button>
 
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <Button variant="secondary" onClick={() => showToast("My Stories: 0")} className="h-[66px] justify-start gap-3 rounded-lg px-4">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted">
-                    <BookOpen className="size-[19px]" strokeWidth={1.7} />
+              <div className="mt-3 grid grid-cols-2 gap-2.5">
+                <Button variant="secondary" onClick={() => showToast("My Stories: 0")} className="h-[58px] justify-start gap-2.5 rounded-lg px-3">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-muted">
+                    <BookOpen className="size-[17px]" strokeWidth={1.7} />
                   </span>
                   <span className="text-left">
-                    <span className="block text-[14px] font-medium">My Stories</span>
-                    <span className="mt-0.5 block text-[13px] font-semibold text-muted-foreground">0</span>
+                    <span className="block text-[13px] font-medium">My Stories</span>
+                    <span className="block text-[12px] font-semibold text-muted-foreground">0</span>
                   </span>
                 </Button>
-                <Button variant="secondary" onClick={() => showToast("Wishlist: 0")} className="h-[66px] justify-start gap-3 rounded-lg px-4">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted">
-                    <Heart className="size-[19px]" strokeWidth={1.7} />
+                <Button variant="secondary" onClick={() => showToast("Wishlist: 0")} className="h-[58px] justify-start gap-2.5 rounded-lg px-3">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-full bg-muted">
+                    <Heart className="size-[17px]" strokeWidth={1.7} />
                   </span>
                   <span className="text-left">
-                    <span className="block text-[14px] font-medium">Wishlist</span>
-                    <span className="mt-0.5 block text-[13px] font-semibold text-muted-foreground">0</span>
+                    <span className="block text-[13px] font-medium">Wishlist</span>
+                    <span className="block text-[12px] font-semibold text-muted-foreground">0</span>
                   </span>
                 </Button>
               </div>
@@ -377,23 +373,23 @@ function ProfilePage() {
               <Button
                 variant="secondary"
                 onClick={() => showToast("Coming Soon")}
-                className="mt-3 flex h-[78px] w-full items-center gap-3 rounded-lg border border-border px-3.5 text-left"
+                className="mt-2.5 flex h-[66px] w-full items-center gap-2.5 rounded-lg border border-border px-3 text-left"
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-referral text-referral-foreground">
-                  <Users className="size-[21px]" strokeWidth={1.9} />
+                <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-referral text-referral-foreground">
+                  <Users className="size-[19px]" strokeWidth={1.9} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[15px] font-semibold">Referral</span>
-                  <span className="mt-0.5 block text-[12px] font-normal leading-snug text-muted-foreground">
-                    Earn up to 40% commission by inviting friends
+                  <span className="block text-[14px] font-semibold">Referral</span>
+                  <span className="mt-0.5 block text-[11px] font-normal leading-snug text-muted-foreground">
+                    Refer a user and earn story access
                   </span>
                 </span>
-                <span className="grid h-9 shrink-0 place-items-center rounded-full bg-canvas px-3.5 text-[12px] font-medium">
+                <span className="grid h-8 shrink-0 place-items-center rounded-full bg-canvas px-3 text-[11px] font-medium">
                   Invite now
                 </span>
               </Button>
 
-              <section className="mt-4 border-t border-border">
+              <section className="mt-3 border-t border-border">
                 <ProfileRow icon={Workflow} label="How it Works" onClick={() => openPage("how")} />
                 <ProfileRow icon={Ticket} label="Coupon & Offers" onClick={() => openPage("coupons")} />
                 <ProfileRow icon={Headset} label="Help & Support" onClick={() => openPage("support")} />
@@ -436,7 +432,7 @@ function ProfilePage() {
 
               {editSheet === "avatar" ? (
                 <div className="pt-3">
-                  <img src={draftAvatar} alt="Selected profile avatar" className="mx-auto size-24 rounded-full bg-avatar object-cover" />
+                  <img src={draftAvatar} alt="Selected profile avatar" className="mx-auto size-20 rounded-full bg-avatar object-cover" />
                   <input ref={fileInputRef} type="file" accept="image/*" onChange={chooseAvatar} className="hidden" />
                   <Button variant="secondary" onClick={() => fileInputRef.current?.click()} className="mt-6 h-[54px] w-full justify-between rounded-lg px-4 text-[15px]">
                     <span className="flex items-center gap-3"><ImagePlus className="size-5" strokeWidth={1.7} />Choose a photo</span>
