@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as DeliveryAndRefundPolicyRouteImport } from './routes/delivery-and-refund-policy'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReadMeRouteImport } from './routes/read-me'
 import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
 
@@ -42,6 +43,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReadMeRoute = ReadMeRouteImport.update({
   id: '/read-me',
   path: '/read-me',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRoute
   '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/profile': typeof ProfileRoute
   '/read-me': typeof ReadMeRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRoute
   '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/profile': typeof ProfileRoute
   '/read-me': typeof ReadMeRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/community': typeof CommunityRoute
   '/delivery-and-refund-policy': typeof DeliveryAndRefundPolicyRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/profile': typeof ProfileRoute
   '/read-me': typeof ReadMeRoute
   '/terms-and-conditions': typeof TermsAndConditionsRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/delivery-and-refund-policy'
     | '/privacy-policy'
+    | '/profile'
     | '/read-me'
     | '/terms-and-conditions'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/delivery-and-refund-policy'
     | '/privacy-policy'
+    | '/profile'
     | '/read-me'
     | '/terms-and-conditions'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/delivery-and-refund-policy'
     | '/privacy-policy'
+    | '/profile'
     | '/read-me'
     | '/terms-and-conditions'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRoute
   DeliveryAndRefundPolicyRoute: typeof DeliveryAndRefundPolicyRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ProfileRoute: typeof ProfileRoute
   ReadMeRoute: typeof ReadMeRoute
   TermsAndConditionsRoute: typeof TermsAndConditionsRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/read-me': {
       id: '/read-me'
       path: '/read-me'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommunityRoute: CommunityRoute,
   DeliveryAndRefundPolicyRoute: DeliveryAndRefundPolicyRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ProfileRoute: ProfileRoute,
   ReadMeRoute: ReadMeRoute,
   TermsAndConditionsRoute: TermsAndConditionsRoute,
 }

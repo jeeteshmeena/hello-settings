@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useState, type ComponentType, type Dispatch, type SetStateAction } from "react";
 
+import avatarUrl from "@/assets/profile-avatar.png";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -308,6 +309,25 @@ function SettingsPage() {
               </Button>
               <h1 className="mb-4 text-[24px] font-semibold leading-tight">Settings</h1>
             </header>
+
+            <Button
+              variant="ghost"
+              onClick={() => navigate({ to: "/profile" })}
+              className="mb-3 grid h-auto w-full grid-cols-[48px_minmax(0,1fr)_18px] items-center gap-3 rounded-none px-1 py-2 text-left hover:bg-accent"
+            >
+              <img
+                src={avatarUrl}
+                alt="Profile avatar"
+                width={816}
+                height={816}
+                className="size-12 rounded-full bg-[#b9a8d9] object-cover"
+              />
+              <span className="min-w-0">
+                <span className="block truncate text-[16px] font-semibold leading-snug">Jeetesh Meena</span>
+                <span className="block text-[13px] text-muted-foreground">View profile</span>
+              </span>
+              <ChevronRight className="size-[18px] justify-self-end text-foreground" strokeWidth={1.8} />
+            </Button>
 
             <section className="border-t border-border">
               <SettingRow icon={CircleDollarSign} label="Currency" value={selections.currency} onClick={() => openPage("currency")} />
