@@ -65,6 +65,11 @@
   --color-switch: var(--switch);
   --color-switch-knob: var(--switch-knob);
   --color-overlay: var(--overlay);
+  --color-avatar: var(--avatar);
+  --color-success: var(--success);
+  --color-success-muted: var(--success-muted);
+  --color-referral: var(--referral);
+  --color-referral-foreground: var(--referral-foreground);
   --shadow-dialog: 0 20px 50px var(--shadow-color);
 }
 
@@ -94,6 +99,11 @@
   --switch: oklch(0.27 0.008 260);
   --switch-knob: oklch(0.96 0.003 260);
   --overlay: oklch(0 0 0 / 72%);
+  --avatar: oklch(0.72 0.08 300);
+  --success: oklch(0.76 0.18 148);
+  --success-muted: oklch(0.2 0.05 148);
+  --referral: oklch(0.61 0.22 28);
+  --referral-foreground: oklch(0.98 0.004 260);
   --shadow-color: oklch(0 0 0 / 55%);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
